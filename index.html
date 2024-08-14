@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>献立管理アプリ</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <h1>献立管理アプリ</h1>
+
+    <div id="main-container">
+        <div id="left-panel">
+            <!-- 献立登録フォーム -->
+            <div class="container">
+                <h2>献立登録</h2>
+                <div class="form-group">
+                    <label for="menuName">献立名</label>
+                    <input type="text" id="menuName">
+                </div>
+            </div>
+
+            <!-- 献立選出フォーム -->
+            <div class="container">
+                <h2>献立選出</h2>
+                <div class="form-group">
+                    <label for="selectCategory">カテゴリで選ぶ</label>
+                    <select id="selectCategory"></select>
+                </div>
+                <button class="btn btn-warning" onclick="selectRandomMenu()">ランダムに献立を選出</button>
+                <div id="selectedMenu"></div>
+            </div>
+
+            <!-- 削除ボタン切替 -->
+            <div class="container">
+                <label for="toggleDeleteButton">削除ボタンを表示</label>
+                <input type="checkbox" id="toggleDeleteButton" onclick="toggleDeleteButtons()">
+            </div>
+        </div>
+
+        <div id="right-panel">
+            <!-- カテゴリ追加フォーム -->
+            <div class="container">
+                <h2>カテゴリ追加</h2>
+                <div class="form-group">
+                    <label for="categoryInput">カテゴリ</label>
+                    <div class="input-group">
+                        <input type="text" id="categoryInput" placeholder="カテゴリを追加">
+                        <button class="btn btn-primary" onclick="addCategory()">カテゴリを追加</button>
+                    </div>
+                    <div id="categoryList"></div>
+                </div>
+            </div>
+
+            <!-- 材料リスト登録フォーム -->
+            <div class="container">
+                <h2>材料リスト登録</h2>
+                <div class="form-group">
+                    <label for="ingredientInput">材料リスト</label>
+                    <div class="input-group">
+                        <input type="text" id="ingredientInput" placeholder="材料を追加">
+                        <button class="btn btn-primary" onclick="addIngredient()">材料を追加</button>
+                    </div>
+                    <div id="ingredientList"></div>
+                </div>
+            </div>
+
+            <!-- 調味料リスト登録フォーム -->
+            <div class="container">
+                <h2>調味料リスト登録</h2>
+                <div class="form-group">
+                    <label for="seasoningInput">調味料リスト</label>
+                    <div class="input-group">
+                        <input type="text" id="seasoningInput" placeholder="調味料を追加">
+                        <button class="btn btn-primary" onclick="addSeasoning()">調味料を追加</button>
+                    </div>
+                    <div id="seasoningList"></div>
+                </div>
+                <button class="btn btn-success" onclick="registerMenu()">献立を登録</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
