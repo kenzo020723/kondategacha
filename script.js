@@ -47,18 +47,24 @@ function updateCategoryList() {
     categoryList.innerHTML = '';
     categories.forEach((category, index) => {
         const categoryItem = document.createElement('div');
+        categoryItem.classList.add('category-item');
+
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.checked = category.selected;
         checkbox.onchange = () => category.selected = checkbox.checked;
+
         const label = document.createElement('label');
         label.textContent = category.name;
+        label.style.marginLeft = '8px';
+
         const deleteButton = createDeleteButton(() => {
             categories.splice(index, 1);
             updateCategoryList();
             updateSelectCategory();
             saveToLocalStorage();
         });
+
         categoryItem.append(checkbox, label, deleteButton);
         categoryList.appendChild(categoryItem);
     });
@@ -95,13 +101,17 @@ function updateIngredientList() {
         checkbox.type = 'checkbox';
         checkbox.checked = ingredient.selected;
         checkbox.onchange = () => ingredient.selected = checkbox.checked;
+
         const label = document.createElement('label');
         label.textContent = ingredient.name;
+        label.style.marginLeft = '8px';
+
         const deleteButton = createDeleteButton(() => {
             ingredients.splice(index, 1);
             updateIngredientList();
             saveToLocalStorage();
         });
+
         ingredientItem.append(checkbox, label, deleteButton);
         ingredientList.appendChild(ingredientItem);
     });
@@ -127,16 +137,29 @@ function updateSeasoningList() {
         checkbox.type = 'checkbox';
         checkbox.checked = seasoning.selected;
         checkbox.onchange = () => seasoning.selected = checkbox.checked;
+
         const label = document.createElement('label');
         label.textContent = seasoning.name;
+        label.style.marginLeft = '8px';
+
         const deleteButton = createDeleteButton(() => {
             seasonings.splice(index, 1);
             updateSeasoningList();
             saveToLocalStorage();
         });
+
         seasoningItem.append(checkbox, label, deleteButton);
         seasoningList.appendChild(seasoningItem);
     });
+}
+
+function createDeleteButton(onClickFunction) {
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = '削除';
+    deleteButton.classList.add('btn', 'btn-danger');
+    deleteButton.style.display = document.getElementById('toggleDeleteButton').checked ? 'inline' : 'none';
+    deleteButton.onclick = onClickFunction;
+    return deleteButton;
 }
 
 function registerMenu() {
@@ -198,15 +221,6 @@ function displaySelectedMenu(menu) {
     seasoningList.textContent = `調味料: ${menu.seasonings.join(', ')}`;
     seasoningList.classList.add('menu-seasonings');
     selectedMenuDiv.append(nameHeader, categoryList, ingredientList, seasoningList);
-}
-
-function createDeleteButton(onClickFunction) {
-    const deleteButton = document.createElement('button');
-    deleteButton.textContent = '削除';
-    deleteButton.classList.add('btn', 'btn-danger');
-    deleteButton.style.display = document.getElementById('toggleDeleteButton').checked ? 'inline' : 'none';
-    deleteButton.onclick = onClickFunction;
-    return deleteButton;
 }
 
 function toggleDeleteButtons() {
