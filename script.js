@@ -30,6 +30,40 @@ function saveToLocalStorage() {
     localStorage.setItem('menus', JSON.stringify(menus));
 }
 
+function loadCategoriesFromCookie() {
+    const categoriesData = getCookie('categories');
+    if (categoriesData) {
+        categories = JSON.parse(categoriesData);
+        updateCategoryList();
+    }
+}
+
+function saveCategoriesToCookie() {
+    const categoriesData = JSON.stringify(categories);
+    setCookie('categories', categoriesData, 7); // Save for 7 days
+}
+
+function setCookie(name, value, days) {
+    let expires = "";
+    if (days) {
+        let date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+
+function getCookie(name) {
+    let nameEQ = name + "=";
+    let ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) === ' ') c = c.substring(1);
+        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
+
 function addCategory() {
     const categoryInput = document.getElementById('categoryInput');
     const category = categoryInput.value.trim();
@@ -39,6 +73,7 @@ function addCategory() {
         updateCategoryList();
         updateSelectCategory();
         saveToLocalStorage();
+        saveCategoriesToCookie();
     }
 }
 
@@ -63,6 +98,7 @@ function updateCategoryList() {
             updateCategoryList();
             updateSelectCategory();
             saveToLocalStorage();
+            saveCategoriesToCookie();
         });
 
         categoryItem.append(checkbox, label, deleteButton);
@@ -153,15 +189,6 @@ function updateSeasoningList() {
     });
 }
 
-function createDeleteButton(onClickFunction) {
-    const deleteButton = document.createElement('button');
-    deleteButton.textContent = '削除';
-    deleteButton.classList.add('btn', 'btn-danger');
-    deleteButton.style.display = document.getElementById('toggleDeleteButton').checked ? 'inline' : 'none';
-    deleteButton.onclick = onClickFunction;
-    return deleteButton;
-}
-
 function registerMenu() {
     const menuNameInput = document.getElementById('menuName');
     const menuName = menuNameInput.value.trim();
@@ -223,6 +250,15 @@ function displaySelectedMenu(menu) {
     selectedMenuDiv.append(nameHeader, categoryList, ingredientList, seasoningList);
 }
 
+function createDeleteButton(onClickFunction) {
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = '削除';
+    deleteButton.classList.add('btn', 'btn-danger');
+    deleteButton.style.display = document.getElementById('toggleDeleteButton').checked ? 'inline' : 'none';
+    deleteButton.onclick = onClickFunction;
+    return deleteButton;
+}
+
 function toggleDeleteButtons() {
     const buttons = document.querySelectorAll('.btn-danger');
     buttons.forEach(button => {
@@ -233,4 +269,5 @@ function toggleDeleteButtons() {
 window.onload = function() {
     setupEventListeners();
     loadLocalStorageData();
+    loadCategoriesFromCookie();
 };
